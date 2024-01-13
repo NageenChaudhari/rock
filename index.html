@@ -1,0 +1,150 @@
+<?php
+
+$username = "";
+$password = "";
+
+$login = false;
+$showError = false;
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+//Database connection
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "saiauto";
+
+$conn = mysqli_connect($servername, $username, $password, $database);
+if(!$conn){
+    die("connection not a proper" .  mysqli_connect_error());
+}
+/*else {
+    echo "success connection";
+} */
+
+$username = $_POST['username'];
+$password = $_POST['password'];
+$mysql = "SELECT * FROM `login` where username = '$username' AND password = '$password' ";
+$result = mysqli_query($conn, $mysql);
+$num = mysqli_num_rows($result);
+
+
+if($num == 1){
+   $login = true;
+   session_start();
+   $_SESSION['loggedin'] = true;
+   $_SESSION['username'] = $username;
+   header("location:home.php");
+         }
+     
+     else{
+        $showError = " invalid credentials ";
+     }
+    } 
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+ body {
+  background-image: url("all.jpg");
+  background-position: center; 
+  background-repeat: repeat; 
+ 
+ }
+ .col-sm-6{
+  background-color:black;
+  opacity:0.9;
+  height:220px;
+  border-radius:20px;
+ }
+ .nnc{
+height:85px;
+border-radius:20px;
+ }
+ 
+
+
+</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<div class="container-fluid">
+  <h4 style="color:white">Sa<strong style="color:red">i</strong> Auto</h4>
+</div>
+</nav>
+  <?php
+  if($login){
+  echo '
+   <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Success!</strong> You are login.
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div> '; }
+
+if($showError){
+    echo '
+     <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Warning!</strong> '. $showError . '
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div> '; }
+  
+?>
+  <div class="container my-4">
+    <div class="row">
+<div class="col-sm-3">
+</div>
+<div class="col-md-6">
+<h3 class="text-primary text-center bg-dark"><em><strong class="bg-primary text-white mx-2">L</strong><strong class="bg-danger text-white mx-2">o</strong><strong class="bg-success text-white mx-2">g</strong><strong class="bg-secondary text-white mx-2">i</strong><strong class="bg-primary text-white">n</strong></em></h3>
+</div>
+<div class="col-sm-3">
+</div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-3">
+      </div>
+  <div class="mb-3 col-sm-6" >
+ 
+  <form action = "loginuser.php" method = "post">
+      
+       
+    <label for="username" class="form-label mt-4 text-white">User Name</label>
+    <input type="text" class="form-control" id="username" name="username" aria-describedby="emailHelp">
+
+    <label for="password" class="form-label mt-4 text-white">Password</label>
+    <input type="password" class="form-control" id="password" name="password">
+    
+
+<div class="col-sm-3">
+</div>
+</div>
+
+  </div>
+   
+  <div class="row">
+  <div class="col-sm-3">
+  </div>
+<div class="col-md-6 bg-dark nnc">
+<div class="d-grid mt-4 ">
+    <button type="submit" class="btn btn-success"><strong class="text-white mx-1">L</strong><strong class=" text-white mx-1">o</strong><strong class="text-white mx-1">g</strong><strong class=" text-white mx-1">i</strong><strong class=" text-white">n</strong></button>
+    </div>
+    </form>
+</div>
+<div class="col-sm-3">
+</div>
+
+</div>
+  </div>
+  <nav class="bg-dark text-light mt-4">
+   <div class="container-fluid">
+<p style="text-align:center"><em>used car selled at Sai auto conslatant Mehsana.</em></p>
+   </div>
+   </nav>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>
